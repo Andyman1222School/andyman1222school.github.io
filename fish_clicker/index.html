@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1" name="viewport" />
+	<title>Fish Clicker</title>
+	<!--script imported from fish_clicker.js -->
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+
+</head>
+
+<body>
+
+	<!--title-->
+	<h1>Simple Fish Clicker</h1>
+
+	<p>How to play: click the fish to attack it. Use gold gained to purchase health and buffs. Don't let your health go to 0 or you lose! Get the most gold possible.</p>
+	<p>Each round will utilize different randomness. At the end, you can compare all the round results.</p>
+	<button id="resetBtn" onclick="resetUI()">Next round</button>
+	<h2>Round <span id="roundNum"></span></h2>
+	<h3>Current Score (gold - fish health): <span id="score"></span></h3>
+	<p></p>
+	<!--fish image-->
+	<div id="game">
+		<img id="fish" onCLick="press()"src="fish.png"></img><br>
+		<button id="finishBtn" onclick="runToSafety()">Run to safety (keep your score)</button>
+
+		<!--log of events that have commenced-->
+		<p>Current turn:<br> <span id="currentRound"></span></p>
+		<p>Previous turn:<br> <span id="prevRound"></span></p>
+	</div>
+	
+	<!--money count-->
+
+	<!--All the buttons for the shoppe. The buttons' visibility is handled in the script-->
+	<div id="shop">
+
+		<hr>
+		<!--title and "shoppe status-->
+		<h2>Shop</h2>
+		<h4>Prices: <span id="prices"></span></h4>
+		<!--buttons for all the stuff you can buy
+	
+	buy 1 healthpoint for 10 gold-->
+		<button id="health" onClick="healthAdd();">Click to buy 1 health point! (<span id="healthCost">10</span>
+			gold for <span id="healthAmt"></span> health)</button><br>
+
+		<!--buy a defender. Defender code helps you survive fish attacks. See fish_clicker.js for how defender works.-->
+		<button id="defender" onClick="defenderAdd()">Click to buy a defender to defend you
+			against the fish! (<span id="defendCost"></span> gold)</button><br>
+
+		<!--buy an attacker, which boosts you attacking the fish. Check code for how it works.-->
+		<button id="attacker" onClick="attackerAdd();">Click to add an attacker to get
+			revenge on the fish!!! (<span id="attackCost"></span> gold)</button>
+
+	</div>
+
+	<hr>
+
+	<!--status showing all sorts of info-->
+	<div id="status">
+		<h2>Your stats:</h2>
+		<p id="statsString"></p>
+		
+	</div>
+
+	<script src="algorithms.js" type="text/javascript"></script>
+	<script src="fish_clicker.js" type="text/javascript"></script>
+	<script src="interaction.js" type="text/javascript"></script>
+</body>
+
+</html>
