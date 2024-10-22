@@ -18,15 +18,15 @@
 	<h1>Simple Fish Clicker</h1>
 
 	<p>How to play: click the fish to attack it. Use gold gained to purchase health and buffs. Don't let your health go to 0 or you lose! Get the most gold possible.</p>
-	<p>Each round will utilize different randomness. At the end, you can compare all the round results.</p>
-	<button id="resetBtn" onclick="resetUI()">Next round</button>
+	<p>Each round will utilize different algorithms to determine damage and gold. At the end, you can compare all the round results.</p>
+	<button id="replayBtn" onclick="resetUI(true)">Replay round</button><button id="resetBtn" onclick="resetUI(false)">Next round</button>
 	<h2>Round <span id="roundNum"></span></h2>
 	<h3>Current Score (gold - fish health): <span id="score"></span></h3>
 	<p></p>
 	<!--fish image-->
 	<div id="game">
 		<img id="fish" onCLick="press()"src="fish.png"></img><br>
-		<button id="finishBtn" onclick="runToSafety()">Run to safety (keep your score)</button>
+		<button id="finishBtn" onclick="runToSafety()">Run to safety (ends round, keeps score)</button>
 
 		<!--log of events that have commenced-->
 		<p>Current turn:<br> <span id="currentRound"></span></p>

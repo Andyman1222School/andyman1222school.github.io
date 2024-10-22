@@ -3,6 +3,10 @@
 class roundAlgorithms {
 	roundRef = null;
 
+	toString(){
+		return "Random gold only"
+	}
+
 	//final methods- do not modify
 
 	//get the current beat from the roundRef
@@ -78,6 +82,10 @@ class roundAlgorithms {
 //all damage and gold is a random value 0-25.
 //defence/attack divide/multiply
 class fullRandom extends roundAlgorithms {
+	toString() {
+		return "full random"
+	}
+
 	fishDamageGeneration(){
 		return Math.round(Math.random()*25) / (1+this.getCurrentBeat().getDefendBuff())
 	}
@@ -88,5 +96,47 @@ class fullRandom extends roundAlgorithms {
 
 	goldEarnGeneration(){
 		return Math.round(Math.random()*25)
+	}
+}
+
+//fish damage is random (max random 10) but at least amt in gold player has / defendBuff
+//player damage is unchanged
+//gold received is max 10
+
+class weightedGoldRandom extends roundAlgorithms {
+	toString() {
+		return "fish damage weighted based on player's gold"
+	}
+
+	fishDamageGeneration() {
+		return Math.round(Math.random()*10) + (this.roundRef.gold / (1+this.getCurrentBeat().getDefendBuff()) )
+	}
+	goldEarnGeneration() {
+		return Math.round(Math.random()*10)
+	}
+}
+
+//Attacks for player and fish increase by up to 5 (*buff for player, /buff for fish) plus random()*5
+
+class incrementalAttack extends roundAlgorithms {
+	toString() {
+		return "both damage increments randomly"
+	}
+
+	getRoundCount() {
+		return this.roundRef.beats.length
+	}
+
+	prevPlayerDmg = 0
+
+	prevFishDmg = 0
+	playerDamageGeneration(){
+		this.prevPlayerDmg += Math.round(Math.random()*5)*(1+this.getCurrentBeat().getAttackBuff())
+		return  this.prevPlayerDmg
+	}
+
+	fishDamageGeneration() {
+		this.prevFishDmg += Math.round(Math.random()*5)/(1+this.getCurrentBeat().getAttackBuff())
+		return  this.prevFishDmg
 	}
 }

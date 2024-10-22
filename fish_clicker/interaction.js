@@ -1,14 +1,14 @@
 
-function resetUI(){
-	if(reset()) {
+function resetUI(redoRound = false){
+	if(reset(redoRound)) {
 		document.getElementById("game").style.display = "block";
 		//document.getElementById("log").style.display = "none";
 		document.getElementById("shop").style.display = "block";
 		document.getElementById("currentRound").style.display = "block";
 		document.getElementById("prevRound").innerText = "";
 		document.getElementById("resetBtn").style.display = "none";
+		document.getElementById("replayBtn").style.display = "none";
 		document.getElementById("statsString").innerText = ""
-		document.getElementById("roundNum").innerText = roundInd;
 		updateButtons();
 		updateStats();
 	}
@@ -71,6 +71,7 @@ function updateStats(){
 	document.getElementById("currentRound").innerText =  currentRound.getOverallString();
 	document.getElementById("statsString").innerText = currentRound.toString();
 	document.getElementById("score").innerText = currentRound.getScore();
+	document.getElementById("roundNum").innerText = roundInd;
 	//document.getElementById("currentRound").innerText = currentRound.currentBeat.getPurchaseString();
 	//document.getElementById("heal-buy").innerText = currentRound.currentBuy.health;
 	//document.getElementById("def-buy").innerText = currentRound.currentBuy.defend;
@@ -133,6 +134,7 @@ function onComplete() {
 	if(hasNextRound()){
 		document.getElementById("resetBtn").style.display = "block";
 	}
+	document.getElementById("replayBtn").style.display = "block";
 }
 
 //what happens when fish kills you
@@ -155,4 +157,4 @@ function runToSafety() {
 	alert(`You ran to safety! You win with ${currentRound.getScore()} points.`);
 }
 
-resetUI();
+resetUI(false);

@@ -24,7 +24,7 @@ class beat {
 	currentRound = null
 
 	//fish stats
-	fish = { beforeHealth: 100, afterHealth: 100, damgeReceived: 0};
+	fish = { beforeHealth: 100, afterHealth: 100, damageReceived: 0};
 
 	//player stats
 	player = { beforeHealth: 100, afterHealth: 100, damageReceived: 0, beforeGold: 0, afterGold: 0, goldGained: 0};
@@ -91,7 +91,7 @@ class beat {
 	//player damage generation
 	//fish damage generation
 	//player damage dealt
-	//if fish still alive, fish damage dealt
+	//fish damage dealt
 	doAttack(){
 		let randgen = currentRound.randomGen
 		let playerDmg = Math.round(randgen.playerDamageGeneration());
@@ -99,11 +99,11 @@ class beat {
 		this.fish.damageReceived = playerDmg;
 		this.fish.afterHealth -= playerDmg;
 		this.fish.afterHealth = Math.max(0, this.fish.afterHealth)
-		if(this.fish.afterHealth > 0){
-			this.player.damageReceived = fishDmg;
-			this.player.afterHealth -= fishDmg;
-			this.player.afterHealth = Math.max(0, this.player.afterHealth);
-		}
+		//if(this.fish.afterHealth > 0){
+		this.player.damageReceived = fishDmg;
+		this.player.afterHealth -= fishDmg;
+		this.player.afterHealth = Math.max(0, this.player.afterHealth);
+		//}
 		if(this.player.afterHealth > 0){
 			this.player.goldGained = Math.round(randgen.goldEarnGeneration())
 			this.player.afterGold += this.player.goldGained;
@@ -149,7 +149,7 @@ class beat {
 	toString(){
 		
 		return this.getPurchaseString() + 
-		`You dealt the fish ${this.fish.damgeReceived} damage.
+		`You dealt the fish ${this.fish.damageReceived} damage.
 The fish dealt ${this.player.damageReceived} damage to you.
 You gained ${this.player.goldGained} gold.\n`
 	}
@@ -175,7 +175,7 @@ class round {
 	roundActive = false
 
 	constructor(randomGen, startGold = 0){
-		this.randomGen = randomGen;
+		this.randomGen = Object.create(randomGen);
 		randomGen.roundRef = this;
 		this.gold = startGold.valueOf()
 	}
@@ -273,8 +273,10 @@ Player purchased ${healthGain} health and spent ${goldSpend} total gold.\n`
 	}
 }
 
-//rounds played
-var rounds = [new round(new roundAlgorithms()), new round(new fullRandom())]
+//algorithms to play
+var algorithms = [new roundAlgorithms(), new fullRandom(), new weightedGoldRandom(), new incrementalAttack()]
+
+var roundsPlayed = []
 
 //current round
 var currentRound = null
@@ -282,15 +284,18 @@ var currentRound = null
 var roundInd = 0
 
 function hasNextRound(){
-	return roundInd < rounds.length;
+	return roundInd < algorithms.length;
 }
 
 //resets code if possible, advances to next algorithm
-function reset(){
-	if(hasNextRound()){
-		currentRound = rounds[roundInd];
+function reset(replayRound = false){
+	if(hasNextRound() || replayRound){
+		if(!replayRound){
+			roundInd += 1
+		}
+		currentRound = new round(algorithms[roundInd-1]);
+		roundsPlayed.push(currentRound)
 		currentRound.roundActive = true
-		roundInd += 1
 		return true;
 	}
 	return false;
