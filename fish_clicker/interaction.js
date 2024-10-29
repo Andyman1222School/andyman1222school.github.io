@@ -134,6 +134,9 @@ function onComplete() {
 	if(hasNextRound()){
 		document.getElementById("resetBtn").style.display = "block";
 	}
+	else {
+		document.getElementById("showStatsBtn").style.display = "block";
+	}
 	document.getElementById("replayBtn").style.display = "block";
 }
 
@@ -155,6 +158,45 @@ function runToSafety() {
 	onComplete();
 	//tells player you die and update shoppe status
 	alert(`You ran to safety! You win with ${currentRound.getScore()} points.`);
+}
+
+function showStats(){
+	document.getElementById("resetBtn").style.display = "none";
+	document.getElementById("replayBtn").style.display = "none";
+	document.getElementById("showStatsBtn").style.display = "none";
+	document.getElementById("gameReview").style.display = "block";
+
+	let maxCols = 3
+	roundsPlayed.forEach(element => {
+		maxCols = Math.max(maxCols, element.beats+2);
+	})
+	let elem = document.getElementById("statsTable");
+	let top = document.getElementById("topRow")
+	for(i = 3; i < maxCols; i++){
+		k = document.createElement("td");
+		k.innerText = "Turn " + (i-2);
+		top.appendChild(k);
+	}
+
+	for(i = 0; i < roundsPlayed.length; i++) {
+		r = roundsPlayed[i]
+		k = document.createElement("tr");
+		count = document.createElement("td")
+		count.innerText = "Round " + (i+1);
+		algo = document.createElement("td")
+		algo.innerHTML = "<span class='algorithm'>" + r.randomGen.toString() + "</span>";
+		total = document.createElement("td")
+		total.innerText = r.toString();
+		k.appendChild(count);
+		k.appendChild(algo);
+		k.appendChild(total);
+		for(j = 0; j < r.beats.length; j++){
+			item = document.createElement("td")
+			item.innerText = r.beats[j].toString();
+			k.appendChild(item)
+		}
+		elem.appendChild(k)
+	}
 }
 
 resetUI(false);

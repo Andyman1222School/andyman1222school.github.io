@@ -20,6 +20,7 @@
 	<p>How to play: click the fish to attack it. Use gold gained to purchase health and buffs. Don't let your health go to 0 or you lose! Get the most gold possible.</p>
 	<p>Each round will utilize different algorithms to determine damage and gold. At the end, you can compare all the round results.</p>
 	<button id="replayBtn" onclick="resetUI(true)">Replay round</button><button id="resetBtn" onclick="resetUI(false)">Next round</button>
+	<button id="showStatsBtn" onclick="showStats()" style="display: none">Show all stats</button>
 	<h2>Round <span id="roundNum"></span></h2>
 	<h3>Current Score (gold - fish health): <span id="score"></span></h3>
 	<p></p>
@@ -59,7 +60,16 @@
 	</div>
 
 	<hr>
-
+	<div id="gameReview" style="display: none">
+		<table id="statsTable">
+			<tr id="topRow">
+				<td>Round number</td>
+				<td>Algorithms<br><button onclick="showAlgorithms">show/hide</button></td>
+				<td>Overall</td>
+			</tr>
+			<!--create a tr for each round-->
+		</table>
+	</div>
 	<!--status showing all sorts of info-->
 	<div id="status">
 		<h2>Your stats:</h2>
