@@ -33,8 +33,10 @@ function tableToCSV(id) {
             csvrow.push(cols[j].innerHTML);
         }
 
-        // Combine each column value with comma
-        csv_data.push(csvrow.join(","));
+        // Combine each column value with tab
+		//since the text uses commas and openoffice
+		//can deliniate by a custom sequence
+        csv_data.push(csvrow.join("\t"));
     }
     // Combine each row data with new line character
     csv_data = csv_data.join('\n');
