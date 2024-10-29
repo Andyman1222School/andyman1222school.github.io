@@ -186,7 +186,7 @@ function showStats(){
 		algo = document.createElement("td")
 		algo.innerHTML = "<span class='algorithm'>" + r.randomGen.toString() + "</span>";
 		total = document.createElement("td")
-		total.innerText = r.toString();
+		total.innerText = r.getOverallString() + r.getSumString();
 		k.appendChild(count);
 		k.appendChild(algo);
 		k.appendChild(total);
@@ -197,6 +197,13 @@ function showStats(){
 		}
 		elem.appendChild(k)
 	}
+}
+
+algorithmsShown = false
+
+function showAlgorithms(){
+	document.getElementsByClassName("algorithm").style.display = algorithmsShown ? "none" : "block"
+	algorithmsShown = !algorithmsShown
 }
 
 resetUI(false);
