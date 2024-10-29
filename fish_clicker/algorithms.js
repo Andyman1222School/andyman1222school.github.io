@@ -172,11 +172,13 @@ class shuffledAttack extends roundAlgorithms {
 
 	playerDamageGeneration(){
 		this.playerIndex++;
+		this.playerIndex %= this.dmgList.length;
 		return this.playerDmgList[this.playerIndex]*(1+this.getCurrentBeat().getAttackBuff())
 	}
 
 	fishDamageGeneration() {
 		this.fishIndex++;
+		this.fishIndex %= this.dmgList.length
 		return this.fishDmgList[this.fishIndex]/(1+this.getCurrentBeat().getDefendBuff())
 	}
 }
