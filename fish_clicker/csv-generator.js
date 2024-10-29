@@ -15,7 +15,7 @@ function tableToCSV(id) {
     // Variable to store the final csv data
     let csv_data = [];
 
-	let src = document.getElementById("id")
+	let src = document.getElementById(id)
 
     // Get each row data
     let rows = src.getElementsByTagName('tr');
