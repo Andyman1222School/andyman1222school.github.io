@@ -65,12 +65,13 @@
 
 	<hr>
 	<div id="gameReview" style="display: none">
-		<table>
+		<button onclick="download()">download data</button>
+		<table id="table">
 			<thead>
 				<tr  id="topRow">
-					<td>Round number</td>
-					<td>Algorithms<br><button onclick="showAlgorithms()">show/hide</button></td>
-					<td>Overall</td>
+					<th>Round number</th>
+					<th>Algorithms<br><button onclick="showAlgorithms()">show/hide</button></th>
+					<th>Overall</th>
 				</tr>
 			</thead>
 			<tbody id="statsTable">
@@ -89,6 +90,7 @@
 	<script src="algorithms.js" type="text/javascript"></script>
 	<script src="fish_clicker.js" type="text/javascript"></script>
 	<script src="interaction.js" type="text/javascript"></script>
+	<script src="csv-generator.cs" type="text/javascript"></script>
 </body>
 
 </html>

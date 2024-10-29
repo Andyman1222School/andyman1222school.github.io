@@ -173,7 +173,7 @@ function showStats(){
 	let elem = document.getElementById("statsTable");
 	let top = document.getElementById("topRow")
 	for(i = 3; i < maxCols; i++){
-		k = document.createElement("td");
+		k = document.createElement("th");
 		k.innerText = "Turn " + (i-2);
 		top.appendChild(k);
 	}
@@ -181,7 +181,7 @@ function showStats(){
 	for(i = 0; i < roundsPlayed.length; i++) {
 		r = roundsPlayed[i]
 		k = document.createElement("tr");
-		count = document.createElement("td")
+		count = document.createElement("th")
 		count.innerText = "Round " + (i+1);
 		algo = document.createElement("td")
 		algo.innerHTML = "<span class='algorithm' style='display: none'>" + r.randomGen.toString() + "</span>";
