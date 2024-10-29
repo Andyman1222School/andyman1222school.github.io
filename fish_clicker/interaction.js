@@ -168,7 +168,7 @@ function showStats(){
 
 	let maxCols = 3
 	roundsPlayed.forEach(element => {
-		maxCols = Math.max(maxCols, element.beats+2);
+		maxCols = Math.max(maxCols, element.beats.length+2);
 	})
 	let elem = document.getElementById("statsTable");
 	let top = document.getElementById("topRow")
@@ -184,7 +184,7 @@ function showStats(){
 		count = document.createElement("td")
 		count.innerText = "Round " + (i+1);
 		algo = document.createElement("td")
-		algo.innerHTML = "<span class='algorithm'>" + r.randomGen.toString() + "</span>";
+		algo.innerHTML = "<span class='algorithm' style='display: none'>" + r.randomGen.toString() + "</span>";
 		total = document.createElement("td")
 		total.innerText = r.getOverallString() + r.getSumString();
 		k.appendChild(count);
@@ -202,7 +202,10 @@ function showStats(){
 algorithmsShown = false
 
 function showAlgorithms(){
-	document.getElementsByClassName("algorithm").style.display = algorithmsShown ? "none" : "block"
+	arr = document.getElementsByClassName("algorithm")
+	for(i = 0; i < arr.length; i++){
+		arr[i].style.display = algorithmsShown ? "none" : "block"
+	}
 	algorithmsShown = !algorithmsShown
 }
 
