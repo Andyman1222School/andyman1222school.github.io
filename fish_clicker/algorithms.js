@@ -156,7 +156,7 @@ class shuffledAttack extends roundAlgorithms {
 	fishIndex = 0
 
 	constructor(roundRef){
-		super.constructor(roundRef);
+		super(roundRef);
 		let shuffled = dmgList
 		.map(value => ({ value, sort: Math.random() }))
 		.sort((a, b) => a.sort - b.sort)
