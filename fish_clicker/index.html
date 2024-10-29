@@ -8,7 +8,11 @@
 	<!--script imported from fish_clicker.js -->
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-
+	<style>
+		thead, td{
+			border: 1px solid;
+		}
+	</style>
 
 </head>
 
@@ -61,12 +65,15 @@
 
 	<hr>
 	<div id="gameReview" style="display: none">
-		<table id="statsTable">
-			<tr id="topRow">
+		<table>
+			<thead id="topRow">
 				<td>Round number</td>
 				<td>Algorithms<br><button onclick="showAlgorithms">show/hide</button></td>
 				<td>Overall</td>
-			</tr>
+			</thead>
+			<tbody id="statsTable">
+
+			</tbody>
 			<!--create a tr for each round-->
 		</table>
 	</div>
