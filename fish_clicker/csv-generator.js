@@ -39,9 +39,7 @@ function tableToCSV(id) {
     // Combine each row data with new line character
     csv_data = csv_data.join('\n');
 
-    /* We will use this function later to download
-    the data in a csv file downloadCSVFile(csv_data);
-    */
+    return csv_data
 }
 
 function downloadCSVFile(csv_data) {
