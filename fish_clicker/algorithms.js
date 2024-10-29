@@ -136,7 +136,47 @@ class incrementalAttack extends roundAlgorithms {
 	}
 
 	fishDamageGeneration() {
-		this.prevFishDmg += Math.round(Math.random()*5)/(1+this.getCurrentBeat().getAttackBuff())
+		this.prevFishDmg += Math.round(Math.random()*5)/(1+this.getCurrentBeat().getDefendBuff())
 		return  this.prevFishDmg
+	}
+}
+
+//attacks are between 10-30 damage base, increments of 10, shuffled
+class shuffledAttack extends roundAlgorithms {
+	dmgList = [10,20,30]
+
+	toString() {
+		return "shuffled damage"
+	}
+
+	playerDmgList = []
+	playerIndex = 0
+
+	fishDmgList = []
+	fishIndex = 0
+
+	constructor(roundRef){
+		super.constructor(roundRef);
+		let shuffled = dmgList
+		.map(value => ({ value, sort: Math.random() }))
+		.sort((a, b) => a.sort - b.sort)
+		.map(({ value }) => value)
+		this.playerDmgList = shuffled
+
+		let shuffled2 = dmgList
+		.map(value => ({ value, sort: Math.random() }))
+		.sort((a, b) => a.sort - b.sort)
+		.map(({ value }) => value)
+		this.fishDmgList = shuffled2
+	}
+
+	playerDamageGeneration(){
+		this.playerIndex++;
+		return this.playerDmgList[this.playerIndex]*(1+this.getCurrentBeat().getAttackBuff())
+	}
+
+	fishDamageGeneration() {
+		this.fishIndex++;
+		return this.fishDmgList[this.fishIndex]/(1+this.getCurrentBeat().getDefendBuff())
 	}
 }

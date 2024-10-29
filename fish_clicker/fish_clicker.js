@@ -274,7 +274,7 @@ Player purchased ${healthGain} health and spent ${goldSpend} total gold.\n`
 }
 
 //algorithms to play
-var algorithms = [new roundAlgorithms(), new fullRandom(), new weightedGoldRandom(), new incrementalAttack()]
+var algorithms = [new roundAlgorithms(), new fullRandom(), new weightedGoldRandom(), new incrementalAttack(), new shuffledAttack()]
 
 var roundsPlayed = []
 
