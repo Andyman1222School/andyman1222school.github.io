@@ -157,13 +157,13 @@ class shuffledAttack extends roundAlgorithms {
 
 	constructor(roundRef){
 		super(roundRef);
-		let shuffled = dmgList
+		let shuffled = this.dmgList
 		.map(value => ({ value, sort: Math.random() }))
 		.sort((a, b) => a.sort - b.sort)
 		.map(({ value }) => value)
 		this.playerDmgList = shuffled
 
-		let shuffled2 = dmgList
+		let shuffled2 = this.dmgList
 		.map(value => ({ value, sort: Math.random() }))
 		.sort((a, b) => a.sort - b.sort)
 		.map(({ value }) => value)
