@@ -168,7 +168,7 @@ function showStats(){
 
 	let maxCols = 3
 	roundsPlayed.forEach(element => {
-		maxCols = Math.max(maxCols, element.beats.length+2);
+		maxCols = Math.max(maxCols, element.beats.length+3);
 	})
 	let elem = document.getElementById("statsTable");
 	let top = document.getElementById("topRow")
