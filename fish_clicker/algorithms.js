@@ -182,3 +182,174 @@ class shuffledAttack extends roundAlgorithms {
 		return this.fishDmgList[this.fishIndex]/(1+this.getCurrentBeat().getDefendBuff())
 	}
 }
+
+class gaussianRandom extends roundAlgorithms {
+    toString() {
+        return "gaussian distribution random"
+    }
+    
+
+	gaussianRand() {
+        let u = 0, v = 0;
+        while(u === 0) u = Math.random();
+        while(v === 0) v = Math.random();
+        return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    }
+
+
+	gaussianRange(min, max) {
+        const gaussian = this.gaussianRand();
+        const scaled = (gaussian + 3) / 6; 
+        return Math.round(min + scaled * (max - min));
+    }
+
+    fishDamageGeneration() {
+        const damage = this.gaussianRange(5, 30);
+        return damage / (1 + this.getCurrentBeat().getDefendBuff());
+    }
+
+    playerDamageGeneration() {
+        const damage = this.gaussianRange(10, 35);
+        return damage * (1 + this.getCurrentBeat().getAttackBuff());
+    }
+
+    goldEarnGeneration() {
+        return this.gaussianRange(5, 25);
+    }
+}
+
+class exponentialRandom extends roundAlgorithms {
+    toString() {
+        return "exponential growth random"
+    }
+
+    getRoundCount() {
+        return this.roundRef.beats.length;
+    }
+
+    fishDamageGeneration() {
+        const baseAmount = 5;
+        const growth = 1.2;
+        const round = this.getRoundCount();
+        const randomFactor = 0.5 + Math.random();
+        return (baseAmount * Math.pow(growth, round/3) * randomFactor) / 
+               (1 + this.getCurrentBeat().getDefendBuff());
+    }
+
+    playerDamageGeneration() {
+        const baseAmount = 8;
+        const growth = 1.15;
+        const round = this.getRoundCount();
+        const randomFactor = 0.8 + Math.random() * 0.4;
+        return (baseAmount * Math.pow(growth, round/3) * randomFactor) * 
+               (1 + this.getCurrentBeat().getAttackBuff());
+    }
+
+    goldEarnGeneration() {
+        const baseAmount = 10;
+        const growth = 1.1;
+        const round = this.getRoundCount();
+        return Math.round(baseAmount * Math.pow(growth, round/4) * Math.random());
+    }
+}
+
+class progressiveRandom extends roundAlgorithms {
+	toString() {
+		return "progressively increasing damage"
+	}
+
+	roundCount = 0;
+
+	playerDamageGeneration() {
+		this.roundCount++;
+		return Math.round(Math.random() * 10) + (this.roundCount * 2) + this.getCurrentBeat().getAttackBuff();
+	}
+
+	fishDamageGeneration() {
+		this.roundCount++;
+		return Math.round(Math.random() * 10) + (this.roundCount * 2) - this.getCurrentBeat().getDefendBuff();
+	}
+
+	goldEarnGeneration() {
+		return Math.round(Math.random() * 10) + (this.roundCount % 5); // small increase every 5 rounds
+	}
+}
+
+class sinusoidalRandom extends roundAlgorithms {
+    toString() {
+        return "sinusoidal wave random"
+    }
+
+    getRoundCount() {
+        return this.roundRef.beats.length;
+    }
+
+    sineWaveValue(amplitude, frequency, phase) {
+        const round = this.getRoundCount();
+        return amplitude * (1 + Math.sin(frequency * round + phase));
+    }
+
+    fishDamageGeneration() {
+        const baseDamage = this.sineWaveValue(10, 0.3, 0) + Math.random() * 5;
+        return baseDamage / (1 + this.getCurrentBeat().getDefendBuff());
+    }
+
+    playerDamageGeneration() {
+        const baseDamage = this.sineWaveValue(15, 0.2, Math.PI/4) + Math.random() * 8;
+        return baseDamage * (1 + this.getCurrentBeat().getAttackBuff());
+    }
+
+    goldEarnGeneration() {
+        return Math.round(this.sineWaveValue(8, 0.4, Math.PI/2) + Math.random() * 5);
+    }
+}
+
+class multiModalRandom extends roundAlgorithms {
+    toString() {
+        return "multi-modal distribution random"
+    }
+
+    getRoundCount() {
+        return this.roundRef.beats.length;
+    }
+
+    multiModalValue(peaks) {
+        const selector = Math.random();
+        let sum = 0;
+        for (const peak of peaks) {
+            if (selector < peak.probability + sum) {
+                return peak.min + Math.random() * (peak.max - peak.min);
+            }
+            sum += peak.probability;
+        }
+        return peaks[peaks.length-1].min + Math.random() * 
+               (peaks[peaks.length-1].max - peaks[peaks.length-1].min);
+    }
+
+    fishDamageGeneration() {
+        const peaks = [
+            {min: 5, max: 10, probability: 0.4},
+            {min: 15, max: 20, probability: 0.4},
+            {min: 25, max: 30, probability: 0.2}
+        ];
+        return this.multiModalValue(peaks) / (1 + this.getCurrentBeat().getDefendBuff());
+    }
+
+    playerDamageGeneration() {
+        const peaks = [
+            {min: 8, max: 15, probability: 0.3},
+            {min: 18, max: 25, probability: 0.5},
+            {min: 28, max: 35, probability: 0.2}
+        ];
+        return this.multiModalValue(peaks) * (1 + this.getCurrentBeat().getAttackBuff());
+    }
+
+    goldEarnGeneration() {
+        const peaks = [
+            {min: 1, max: 8, probability: 0.3},
+            {min: 10, max: 15, probability: 0.4},
+            {min: 18, max: 25, probability: 0.3}
+        ];
+        return Math.round(this.multiModalValue(peaks));
+    }
+}
