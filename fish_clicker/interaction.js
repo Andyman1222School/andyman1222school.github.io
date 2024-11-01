@@ -9,6 +9,7 @@ function resetUI(redoRound = false){
 		document.getElementById("resetBtn").style.display = "none";
 		document.getElementById("replayBtn").style.display = "none";
 		document.getElementById("statsString").innerText = ""
+		document.getElementById("showStatsBtn").style.display = "none";
 		updateButtons();
 		updateStats();
 	}

@@ -24,37 +24,37 @@ class beat {
 	currentRound = null
 
 	//fish stats
-	fish = { beforeHealth: 100, afterHealth: 100, damageReceived: 0};
+	fish = { beforeHealth: 100, afterHealth: 100, damageReceived: 0 };
 
 	//player stats
-	player = { beforeHealth: 100, afterHealth: 100, damageReceived: 0, beforeGold: 0, afterGold: 0, goldGained: 0};
+	player = { beforeHealth: 100, afterHealth: 100, damageReceived: 0, beforeGold: 0, afterGold: 0, goldGained: 0 };
 
 	//purchases player made, in the form {itemStr, cost, amount}
 	purchases = []
 
-	getAttackBuff(){
+	getAttackBuff() {
 		return this.currentRound.roundBuys.attack
 	}
 
-	getDefendBuff(){
+	getDefendBuff() {
 		return this.currentRound.roundBuys.defend
 	}
 
-	
 
-	addPurchase(type){
+
+	addPurchase(type) {
 		let purchaseMade = false
 		let cost = 0
 		let amt = 0
 		let randgen = currentRound.randomGen
-		switch(type){
+		switch (type) {
 			case "health":
 				if (randgen.healthPurchasable()) {
 					cost = randgen.healthCostGen()
 					amt = randgen.healthEarnGen();
 					this.currentBuy.health++;
 					this.currentRound.roundBuys.health++;
-					this.player.afterHealth+=amt
+					this.player.afterHealth += amt
 					purchaseMade = true
 				}
 				break;
@@ -79,11 +79,11 @@ class beat {
 				}
 				break;
 		}
-		if(purchaseMade)
+		if (purchaseMade)
 			this.currentRound.gold -= cost
-			this.afterGold -= cost
-			this.purchases.push({type: type, cost: cost, amount: amt})
-		
+		this.afterGold -= cost
+		this.purchases.push({ type: type, cost: cost, amount: amt })
+
 	}
 
 	//does an attack, returns true if player still alive
@@ -92,7 +92,7 @@ class beat {
 	//fish damage generation
 	//player damage dealt
 	//fish damage dealt
-	doAttack(){
+	doAttack() {
 		let randgen = currentRound.randomGen
 		let playerDmg = Math.round(randgen.playerDamageGeneration());
 		let fishDmg = Math.round(randgen.fishDamageGeneration());
@@ -104,7 +104,7 @@ class beat {
 		this.player.afterHealth -= fishDmg;
 		this.player.afterHealth = Math.max(0, this.player.afterHealth);
 		//}
-		if(this.player.afterHealth > 0){
+		if (this.player.afterHealth > 0) {
 			this.player.goldGained = Math.round(randgen.goldEarnGeneration())
 			this.player.afterGold += this.player.goldGained;
 			this.currentRound.gold += this.player.goldGained
@@ -112,7 +112,7 @@ class beat {
 		return this.player.afterHealth > 0;
 	}
 
-	constructor(roundRef, initFishHealth = 100, initPlayerHealth = 100){
+	constructor(roundRef, initFishHealth = 100, initPlayerHealth = 100) {
 		this.currentRound = roundRef;
 		this.fish.beforeHealth = initFishHealth
 		this.fish.afterHealth = initFishHealth
@@ -122,34 +122,34 @@ class beat {
 		this.player.afterGold = roundRef.gold
 	}
 
-	getPurchaseString(){
-		let cost = {attack: 0, defend: 0, health: 0}
-		let amt = {attack: 0, defend: 0, health: 0}
+	getPurchaseString() {
+		let cost = { attack: 0, defend: 0, health: 0 }
+		let amt = { attack: 0, defend: 0, health: 0 }
 		let total = 0
-		for(let i = 0; i < this.purchases.length; i++){
-			switch(this.purchases[i].type){
+		for (let i = 0; i < this.purchases.length; i++) {
+			switch (this.purchases[i].type) {
 				case "health":
 					cost.health += this.purchases[i].cost
 					amt.health += this.purchases[i].amount
-				break;
+					break;
 				case "attack":
 					cost.attack += this.purchases[i].cost
 					amt.attack += this.purchases[i].amount
-				break;
+					break;
 				case "defend":
 					cost.defend += this.purchases[i].cost
 					amt.defend += this.purchases[i].amount
-				break;
+					break;
 			}
 			total += this.purchases[i].cost;
 		}
 		return `Spent ${total} total gold; ${cost.health} on ${amt.health} hp, ${cost.attack} on ${amt.attack} attack, ${cost.defend} on ${amt.defend} defend.\n`
 	}
 
-	toString(){
-		
-		return this.getPurchaseString() + 
-		`You dealt the fish ${this.fish.damageReceived} damage.
+	toString() {
+
+		return this.getPurchaseString() +
+			`You dealt the fish ${this.fish.damageReceived} damage.
 The fish dealt ${this.player.damageReceived} damage to you.
 You gained ${this.player.goldGained} gold.\n`
 	}
@@ -174,15 +174,15 @@ class round {
 
 	roundActive = false
 
-	constructor(randomGen, startGold = 0){
+	constructor(randomGen, startGold = 0) {
 		this.randomGen = Object.create(randomGen);
 		randomGen.roundRef = this;
 		this.gold = startGold.valueOf()
 	}
 
 	//executes when the player clicks the fish
-	roundUpdate(){
-		if(!this.isRoundComplete()){
+	roundUpdate() {
+		if (!this.isRoundComplete()) {
 			let val = this.currentBeat.doAttack();
 			this.advanceBeat();
 			this.roundActive = !this.isRoundComplete();
@@ -191,58 +191,58 @@ class round {
 		return false
 	}
 
-	advanceBeat(){
+	advanceBeat() {
 		let lastBeat = this.currentBeat;
 		this.beats.push(lastBeat);
 		this.currentBeat = new beat(this, lastBeat.fish.afterHealth, lastBeat.player.afterHealth)
 	}
 
-	purchaseHealth(){
+	purchaseHealth() {
 		this.currentBeat.addPurchase("health")
 	}
 
-	purchaseAttack(){
+	purchaseAttack() {
 		this.currentBeat.addPurchase("attack")
 	}
 
-	purchaseDefend(){
+	purchaseDefend() {
 		this.currentBeat.addPurchase("defend")
 	}
 
 	//score is always gold - fish hp
-	getScore(){
+	getScore() {
 		return this.gold - this.currentBeat.fish.afterHealth;
 	}
 
 	//stats per round
-	getRoundsString(){
+	getRoundsString() {
 		let str = ""
-		for(let i = 0; i < this.beats.length; i++){
-			str += "Round " + (i+1) + ": " + this.beats[i].toString() + "\n";
+		for (let i = 0; i < this.beats.length; i++) {
+			str += "Turn " + (i + 1) + ": " + this.beats[i].toString() + "\n";
 		}
 		return str;
 	}
 
 	//overall stats currently
-	getOverallString(){
+	getOverallString() {
 		return `Player health: ${this.currentBeat.player.afterHealth}; Fish health: ${this.currentBeat.fish.afterHealth};
 Gold: ${this.gold};\n Previously purchased ${this.roundBuys.health} health, ${this.roundBuys.attack} attack, ${this.roundBuys.defend} defend.
 Turns: ${this.beats.length}; Score: ${this.getScore()}\n`
 	}
 
 	//cumulative values- damage, gold spent, health gained
-	getSumString(){
+	getSumString() {
 		let fishDmg = 0
 		let playerDmg = 0
 		let goldSpend = 0
 		let goldGain = 0
 		let healthGain = 0
-		for(let i = 0; i < this.beats.length; i++){
+		for (let i = 0; i < this.beats.length; i++) {
 			let b = this.beats[i]
-			for(let j = 0; j < b.purchases.length; j++){
+			for (let j = 0; j < b.purchases.length; j++) {
 				let p = b.purchases[j];
 				goldSpend += p.cost;
-				if(p.type == "health"){
+				if (p.type == "health") {
 					healthGain += p.amount;
 				}
 			}
@@ -257,24 +257,34 @@ Player purchased ${healthGain} health and spent ${goldSpend} total gold.\n`
 	}
 
 	//all strings
-	toString(){
+	toString() {
 		return this.getOverallString() + this.getSumString() + "\n" + this.getRoundsString();
 	}
 
-	getPlayerHealth(){
+	getPlayerHealth() {
 		return this.currentBeat.player.afterHealth
 	}
-	getFishHealth(){
+	getFishHealth() {
 		return this.currentBeat.fish.afterHealth
 	}
 
-	isRoundComplete(){
+	isRoundComplete() {
 		return !this.roundActive || (this.getPlayerHealth() <= 0 || this.getFishHealth() <= 0);
 	}
 }
 
 //algorithms to play
-var algorithms = [new roundAlgorithms(), new fullRandom(), new weightedGoldRandom(), new incrementalAttack(), new shuffledAttack()]
+var algorithms = [
+new roundAlgorithms(),
+new fullRandom(),
+new weightedGoldRandom(),
+new incrementalAttack(),
+new shuffledAttack(),
+new gaussianRandom(),
+new exponentialRandom(),
+new progressiveRandom(),
+new sinusoidalRandom(),
+new multiModalRandom()]
 
 var roundsPlayed = []
 
@@ -283,21 +293,21 @@ var currentRound = null
 
 var roundInd = 0
 
-function hasNextRound(){
+function hasNextRound() {
 	return roundInd < algorithms.length;
 }
 
 //resets code if possible, advances to next algorithm
-function reset(replayRound = false){
-	if(hasNextRound() || replayRound){
-		if(!replayRound){
+function reset(replayRound = false) {
+	if (hasNextRound() || replayRound) {
+		if (!replayRound) {
 			roundInd += 1
 		}
-		currentRound = new round(algorithms[roundInd-1]);
+		currentRound = new round(algorithms[roundInd - 1]);
 		roundsPlayed.push(currentRound)
 		currentRound.roundActive = true
 		return true;
 	}
 	return false;
-	
+
 }
